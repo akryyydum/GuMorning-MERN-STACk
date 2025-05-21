@@ -1,0 +1,94 @@
+.location-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.location-title-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.location-title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: #d89500;
+  font-size: 32px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.location-content-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  height: 100vh;
+  align-items: center;
+  margin: 0;
+  padding: 0 10px;
+}
+
+@media (max-width: 900px) {
+  .location-content-row {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .location-title-wrapper {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  .location-title {
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 22px;
+    padding: 10px 0 0 0;
+    margin-bottom: 10px;
+  }
+  .location-content-row {
+    flex-direction: column;
+    gap: 10px;
+    height: auto;
+    margin: 0;
+    padding: 60px 5px 10px 5px;
+  }
+  .map-container {
+    height: 220px !important;
+    min-height: 180px !important;
+  }
+  .ant-col-xs-24 {
+    margin-bottom: 10px;
+  }
+}
+
+@keyframes locationFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.location-fadein {
+  animation: locationFadeInUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) both;
+}

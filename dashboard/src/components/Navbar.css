@@ -1,0 +1,177 @@
+/* Force Poppins font globally */
+body, * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.navbar {
+    font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #d89500;
+  padding: 0.8rem 2rem;
+  color: #251d1b;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-section {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-section-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-section-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-section-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-logo img {
+  max-height: 70px;
+  padding: 0;
+  margin: 0;
+  animation: logoAppear 1s ease-out forwards;
+}
+
+/* Add animations for navbar links */
+@keyframes navLinkHover {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+
+.navbar-link {
+  color: #251d1b;
+  text-decoration: none;
+  font-size: 0.9rem; /* Reduced font size */
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.navbar-link:hover {
+  color: #ffb300;
+  animation: navLinkHover 0.5s ease;
+}
+
+.navbar-link-bold {
+  font-weight: bold;
+}
+
+/* Active link indicator */
+.navbar-link-active {
+  border-bottom: 2px solid #251d1b; /* Changed from #fff to #251d1b */
+}
+
+/* Hamburger menu styles */
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  width: 30px;
+  height: 25px;
+  justify-content: space-between;
+  margin-right: 1rem;
+}
+
+.navbar-hamburger span {
+  display: block;
+  height: 4px;
+  background: #251d1b; /* Changed from #fff to #251d1b */
+  border-radius: 2px;
+}
+
+/* Logo animation */
+@keyframes logoAppear {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Fix for the navbar links - ensure they are horizontal by default */
+.navbar-links {
+  list-style: none;
+  display: flex;
+  flex-direction: row !important; /* Use !important to override any conflicting styles */
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Make sure media query styles are properly overridden for larger screens */
+@media screen and (min-width: 769px) {
+  .navbar-links {
+    flex-direction: row !important;
+    transform: none !important;
+    position: static;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .navbar-section-center {
+    flex: 2;
+  }
+  .navbar-section-left,
+  .navbar-section-right {
+    flex: 1;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar-links {
+    flex-direction: column !important; /* Only change to column on mobile */
+    background: #e0a000; /* Changed from #222 to a lighter shade of the navbar */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 180px;
+    padding: 1rem 0;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    transform: translateX(-200%); /* Fully hide links */
+  }
+  .navbar-links.navbar-links-open {
+    transform: translateX(0); /* Show links */
+  }
+  .navbar-hamburger {
+    display: flex;
+  }
+  .navbar-section-left {
+    position: relative;
+  }
+  .navbar-section-right {
+    justify-content: flex-end;
+  }
+  .navbar-section-center {
+    justify-content: center;
+  }
+}
