@@ -5,21 +5,37 @@ import './Location.css';
 
 const { Title, Paragraph, Text } = Typography;
 
+const NAVBAR_HEIGHT = 80; // Adjust if your navbar height is different
+
 const Location = () => {
   return (
-    <div style={styles.container} className="location-container">
+    <div
+      style={{
+        ...styles.container,
+        paddingTop: NAVBAR_HEIGHT,
+        height: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
+        overflowY: 'auto',
+        WebkitOverflowScrolling: 'touch',
+      }}
+      className="location-container location-mobile-scroll"
+    >
       <div style={styles.darkOverlay}></div>
       <div className="location-title-wrapper">
         <h2 className="location-title">Where to Find Us</h2>
       </div>
       <Row
         gutter={[8, 16]}
-        style={styles.contentRow}
-        className="location-content-row location-fadein" // <-- add animation class
+        style={{
+          ...styles.contentRow,
+          minHeight: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
+          height: 'auto',
+        }}
+        className="location-content-row location-fadein"
       >
         <Col
           xs={24}
           md={11}
+          className="location-map-col"
           style={{
             ...styles.mapCol,
             width: '100%',
@@ -52,6 +68,7 @@ const Location = () => {
         <Col
           xs={24}
           md={11}
+          className="location-info-col"
           style={{
             ...styles.infoCol,
             width: '100%',
@@ -102,11 +119,9 @@ const Location = () => {
 
 const styles = {
   container: {
-    position: 'fixed',
-    top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    // height and paddingTop are set dynamically above
     padding: 0,
     overflow: 'hidden',
     backgroundImage:
@@ -126,7 +141,7 @@ const styles = {
   },
   contentRow: {
     margin: 0,
-    height: '100vh',
+    // height is set dynamically above
     alignItems: 'center',
     position: 'relative',
     zIndex: 2,

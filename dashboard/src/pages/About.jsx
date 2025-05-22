@@ -1,29 +1,22 @@
 import React from 'react';
-import { Card, Typography } from 'antd';
+import { Typography } from 'antd';
+import './About.css';
 
 const { Title, Paragraph } = Typography;
 
 const About = () => {
   return (
-    <div style={styles.container}>
-      <div style={styles.box}>
-        <div style={{ padding: '2rem', display: 'flex', justifyContent: 'center' }}>
-          <Card style={{ maxWidth: '100%', width: '100%' }}>
-            <Title level={2} style={{ textAlign: 'center' }}>About GuMorning</Title>
-            <Paragraph style={{ textAlign: 'center' }}>
-              GuMorning is your all-in-one dashboard for productivity, information, and more.
-              Our mission is to help you start your day right with everything you need in one place.
-            </Paragraph>
-          </Card>
+    <div style={styles.container} className="about-container">
+      <div style={styles.darkOverlay}></div>
+      <div className="about-content about-fadein">
+        <div className="LeftAbout">
+          <Title level={2} className="about-title">About GuMorning</Title>
         </div>
-        <div>
-          <Title level={3} style={{ textAlign: 'center' }}>Features</Title>
-          <ul style={{ listStyleType: 'none', padding: 0, textAlign: 'center' }}>
-            <li>Weather Updates</li>
-            <li>News Headlines</li>
-            <li>Task Management</li>
-            <li>Calendar Integration</li>
-          </ul>
+        <div className="RightAbout">
+          <Paragraph className="about-paragraph">
+            GuMorning is your all-in-one dashboard for productivity, information, and more.
+            Our mission is to help you start your day right with everything you need in one place.
+          </Paragraph>
         </div>
       </div>
     </div>
@@ -32,25 +25,31 @@ const About = () => {
 
 const styles = {
   container: {
-    minHeight: '100vh',
+    position: 'fixed',
+    top: 0,
+    left: 0,
     width: '100vw',
+    height: '100vh',
     margin: 0,
     padding: 0,
-    backgroundImage: 'url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80")',
+    overflow: 'hidden',
+    backgroundImage: 'url("https://scontent.fbag2-1.fna.fbcdn.net/v/t51.75761-15/483533952_17886753375219780_127958373605531872_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEUDI-kbywdz7r2IinIyC2Zx3JMoxwF5L7HckyjHAXkvjEKB5hrQwyv0IKB3GHQ72jB0Y4NXdlpaJqs32QEyMHe&_nc_ohc=vbznPYmeYccQ7kNvwGpM2Pj&_nc_oc=AdmmmUppvAQe9Wo55WoDyjO8DfGJdUYY2-2dTHSLHsL8B193ZbtnQSCoMWpQn1AkGuE&_nc_zt=23&_nc_ht=scontent.fbag2-1.fna&_nc_gid=KJIEj9s19m9tSl-99H_jEw&oh=00_AfIfd9nO5HZYYZl0ii-EsvPY0uSjw5kmijkjRwQJrqm7HQ&oe=68343468")',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 0,
   },
-  box: {
-    background: 'rgba(255, 255, 255, 0.9)',
-    padding: '2rem',
-    borderRadius: '16px',
-    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.2)',
-    maxWidth: '800px',
-    width: '90%',
+  darkOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: 'rgba(0,0,0,0.82)',
+    zIndex: 1,
   },
 };
 

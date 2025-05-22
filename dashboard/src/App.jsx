@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import About from './pages/About'
 import Location from './pages/Location'
+import Admin from './pages/Admin'
 import './App.css'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/location" element={<Location />} />
         {/* Add other routes here */}
+        <Route path="/profile" element={<Admin />} />
       </Routes>
     </>
   )
