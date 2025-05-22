@@ -1,0 +1,97 @@
+@keyframes menuFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-fadein {
+  animation: menuFadeInUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.menu-title {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.menu-card {
+  transition: box-shadow 0.2s;
+}
+.menu-card:hover {
+  box-shadow: 0 12px 32px rgba(216,149,0,0.18);
+}
+
+.menu-selected-slide {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+.menu-slide-right {
+  animation-name: menuSlideInRight;
+}
+.menu-slide-left {
+  animation-name: menuSlideInLeft;
+}
+
+@keyframes menuSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes menuSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.menu-list-card-selected {
+  border: 2px solid #d89500 !important;
+  box-shadow: 0 0 0 2px #d8950033;
+  opacity: 1 !important;
+}
+
+html, body, #root {
+  overflow-x: hidden !important;
+}
+
+.menu-search-bar input {
+  background: rgba(0,0,0,0.7) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+.menu-search-bar .ant-input-affix-wrapper {
+  background: rgba(0,0,0,0.7) !important;
+  border: 1.5px solid #d89500 !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+}
+.menu-search-bar .ant-input {
+  background: transparent !important;
+  color: #fff !important;
+}
+.menu-search-bar .ant-input-clear-icon {
+  color: #d89500 !important;
+}
+.menu-search-bar .ant-input-search-button {
+  background: #d89500 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+.menu-search-bar .ant-input-search-icon {
+  color: #fff !important;
+}

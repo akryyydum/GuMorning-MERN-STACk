@@ -70,12 +70,35 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-section navbar-section-center">
-        <div className="navbar-logo">
-          <img src={logo} alt="GuMorning Logo" style={{ height: '70px' }} /> {/* Fixed height value */}
+        <div className="navbar-logo" style={{ overflow: 'hidden', maxWidth: '100%', display: 'flex', justifyContent: 'center' }}>
+          <img
+            src={logo}
+            alt="GuMorning Logo"
+            style={{
+              height: '70px',
+              maxWidth: '100%',
+              width: 'auto',
+              display: 'block',
+              objectFit: 'contain'
+            }}
+          />
         </div>
       </div>
-      <div className="navbar-section navbar-section-right">
-        <ul style={{ display: 'flex', alignItems: 'center', gap: '16px', margin: 0, padding: 0, listStyle: 'none' }}>
+      <div className="navbar-section navbar-section-right" style={{ minWidth: 0, flexShrink: 1 }}>
+        <ul
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            margin: 0,
+            padding: 0,
+            listStyle: 'none',
+            flexWrap: 'wrap',
+            minWidth: 0,
+            maxWidth: '100%',
+            overflow: 'hidden'
+          }}
+        >
           <li>
             <Link
               to="/social"
@@ -83,7 +106,6 @@ const Navbar = () => {
               onClick={() => setOpen(false)}
             >
               <ShareAltOutlined style={{ marginRight: 6 }} />
-              Social Media
             </Link>
           </li>
           <li>
@@ -93,7 +115,6 @@ const Navbar = () => {
           onClick={() => setOpen(false)}
         >
           <UserOutlined style={{ marginRight: 6 }} />
-          Profile
         </Link>
           </li>
         </ul>

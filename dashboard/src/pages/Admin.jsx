@@ -15,14 +15,59 @@ import {
 } from 'antd';
 import { PlusOutlined, UploadOutlined, EditOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
 
-// Dummy API functions (replace with real API calls)
-const fetchMenuItems = async () => []; // GET /api/menu
-const createMenuItem = async (item) => {}; // POST /api/menu
-const updateMenuItem = async (id, item) => {}; // PUT /api/menu/:id
-const deleteMenuItem = async (id) => {}; // DELETE /api/menu/:id
+// API functions
+const API_URL = 'http://localhost:5000/api';
 
-const fetchUsers = async () => []; // GET /api/users
-const deleteUser = async (id) => {}; // DELETE /api/users/:id
+const fetchMenuItems = async () => {
+  const res = await fetch(`${API_URL}/menu`);
+  if (!res.ok) {
+    // Try to parse error message, fallback to status text
+    let errMsg = 'Failed to fetch menu items';
+    try {
+      const err = await res.json();
+      errMsg = err.error || errMsg;
+    } catch {
+      errMsg = res.statusText || errMsg;
+    }
+    throw new Error(errMsg);
+  }
+  return await res.json();
+};
+const createMenuItem = async (item) => {
+  const res = await fetch(`${API_URL}/menu`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(item),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || 'Failed to create menu item');
+  }
+};
+const updateMenuItem = async (id, item) => {
+  const res = await fetch(`${API_URL}/menu/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(item),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || 'Failed to update menu item');
+  }
+};
+const deleteMenuItem = async (id) => {
+  const res = await fetch(`${API_URL}/menu/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Failed to delete menu item');
+};
+
+const fetchUsers = async () => {
+  const res = await fetch(`${API_URL}/users`);
+  return await res.json();
+};
+const deleteUser = async (id) => {
+  const res = await fetch(`${API_URL}/users/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Failed to delete user');
+};
 
 const Admin = () => {
   // Menu state
@@ -42,8 +87,13 @@ const Admin = () => {
   // Fetch menu items
   const loadMenu = async () => {
     setMenuLoading(true);
-    const data = await fetchMenuItems();
-    setMenu(data);
+    try {
+      const data = await fetchMenuItems();
+      setMenu(data);
+    } catch (err) {
+      message.error(err.message || 'Failed to load menu');
+      setMenu([]); // Optionally clear menu on error
+    }
     setMenuLoading(false);
   };
 
@@ -99,7 +149,7 @@ const Admin = () => {
       handleMenuModalCancel();
       loadMenu();
     } catch (err) {
-      // Validation error
+      message.error(err.message || 'Error occurred');
     }
   };
 
