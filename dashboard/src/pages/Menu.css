@@ -95,3 +95,47 @@ html, body, #root {
 .menu-search-bar .ant-input-search-icon {
   color: #fff !important;
 }
+
+.bakery-card {
+  border-radius: 18px !important;
+  background: linear-gradient(135deg, #23211f 80%, #2d261b 100%) !important;
+  border: none !important;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.22) !important;
+  transition: box-shadow 0.2s, transform 0.2s !important;
+  min-height: 320px;
+  overflow: hidden;
+}
+.bakery-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(216,149,0,0.18) !important;
+  transform: translateY(-4px) scale(1.03);
+}
+.bakery-card .ant-card-body {
+  background: transparent !important;
+  padding-bottom: 18px !important;
+}
+.bakery-card img {
+  border-top-left-radius: 18px !important;
+  border-top-right-radius: 18px !important;
+  background: #222 !important;
+  object-fit: cover;
+  width: 100%;
+  height: 160px;
+}
+.bakery-card .ant-btn-primary {
+  background: #d89500 !important;
+  border: none !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(216,149,0,0.10) !important;
+  transition: background 0.2s;
+}
+.bakery-card .ant-btn-primary:hover {
+  background: #b8860b !important;
+  color: #fff !important;
+}
+.bakery-card .ant-typography {
+  margin-bottom: 0 !important;
+  color: #fff !important;
+  font-family: 'Poppins', sans-serif !important;
+}

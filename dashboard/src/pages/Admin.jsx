@@ -83,6 +83,7 @@ const Admin = () => {
   // Form
   const [form] = Form.useForm();
   const [photoFile, setPhotoFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   // Fetch menu items
   const loadMenu = async () => {
@@ -133,10 +134,24 @@ const Admin = () => {
     try {
       const values = await form.validateFields();
       let photoUrl = editingMenu?.photo || '';
+      // If a file is selected, upload it and get the URL
       if (photoFile) {
-        // Upload photoFile to server and get URL
-        // photoUrl = await uploadPhoto(photoFile);
-        photoUrl = URL.createObjectURL(photoFile); // For demo only
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('image', photoFile);
+        const res = await fetch(`${API_URL}/upload`, {
+          method: 'POST',
+          body: formData,
+        });
+        setUploading(false);
+        if (!res.ok) {
+          message.error('Image upload failed');
+          return;
+        }
+        const data = await res.json();
+        photoUrl = data.url;
+      } else if (values.photo && typeof values.photo === 'string') {
+        photoUrl = values.photo;
       }
       const menuData = { ...values, photo: photoUrl };
       if (editingMenu) {
@@ -149,6 +164,7 @@ const Admin = () => {
       handleMenuModalCancel();
       loadMenu();
     } catch (err) {
+      setUploading(false);
       message.error(err.message || 'Error occurred');
     }
   };
@@ -206,17 +222,6 @@ const Admin = () => {
     },
   ];
 
-  // Upload props
-  const uploadProps = {
-    beforeUpload: (file) => {
-      setPhotoFile(file);
-      return false; // Prevent auto upload
-    },
-    showUploadList: false,
-    accept: 'image/*',
-    maxCount: 1,
-  };
-
   return (
     <div style={{ padding: 32 }}>
       <Tabs defaultActiveKey="menu" items={[
@@ -257,9 +262,20 @@ const Admin = () => {
                   <Form.Item name="price" label="Price" rules={[{ required: true, type: 'number', min: 0 }]}>
                     <InputNumber prefix="₱" style={{ width: '100%' }} />
                   </Form.Item>
-                  <Form.Item label="Photo">
-                    <Upload {...uploadProps}>
-                      <Button icon={<UploadOutlined />}>Upload Photo</Button>
+                  <Form.Item name="photo" label="Photo URL">
+                    <Input placeholder="Paste a public image URL or upload below" />
+                  </Form.Item>
+                  <Form.Item label="Upload Photo">
+                    <Upload
+                      beforeUpload={(file) => {
+                        setPhotoFile(file);
+                        return false; // Prevent auto upload
+                      }}
+                      showUploadList={false}
+                      accept="image/*"
+                      maxCount={1}
+                    >
+                      <Button icon={<UploadOutlined />} loading={uploading}>Upload Photo</Button>
                     </Upload>
                     {photoFile && (
                       <div style={{ marginTop: 8 }}>
