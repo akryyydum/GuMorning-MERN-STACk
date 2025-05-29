@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Typography, Skeleton, Button } from 'antd';
+import { Row, Col, Card, Typography, Skeleton, Button, Modal } from 'antd';
 import { CoffeeOutlined } from '@ant-design/icons';
 import './Menu.css';
 
 const { Title } = Typography;
-const NAVBAR_HEIGHT = 90; // Set to match your navbar height
+const NAVBAR_HEIGHT = 90; 
 const API_URL = 'http://localhost:5000/api';
 
 const categoryOptions = [
@@ -22,6 +22,8 @@ const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(categoryOptions[0]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalItem, setModalItem] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/menu`)
@@ -35,6 +37,16 @@ const Menu = () => {
   const filteredMenu = selectedCategory === "All"
     ? menu
     : menu.filter(item => item.category === selectedCategory);
+
+  const handleCardClick = (item) => {
+    setModalItem(item);
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setModalItem(null);
+  };
 
   return (
     <div
@@ -66,7 +78,6 @@ const Menu = () => {
         </Title>
       </div>
       <div className="menu-flex-row" style={styles.flexRow}>
-        {/* Left: Categories */}
         <div style={styles.categorySidebar} className="menu-category-sidebar">
           <div style={{ marginBottom: 18, color: '#fff', fontWeight: 600, fontSize: 18, letterSpacing: 1 }}>
             Categories
@@ -94,7 +105,6 @@ const Menu = () => {
             ))}
           </div>
         </div>
-        {/* Right: Products */}
         <div
           style={styles.productsSection}
           className="menu-products-section"
@@ -142,6 +152,7 @@ const Menu = () => {
                         color: '#fff',
                         borderRadius: '0 0 18px 18px',
                       }}
+                      onClick={() => handleCardClick(item)}
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                         <Typography.Text strong style={{ color: '#fff', fontSize: 18 }}>
@@ -157,9 +168,10 @@ const Menu = () => {
                       <Typography.Text style={{ color: '#d89500', fontSize: 14, fontWeight: 500, letterSpacing: 1 }}>
                         {item.category}
                       </Typography.Text>
-                      <Typography.Paragraph style={{ color: '#b0a074', fontSize: 14, minHeight: 40, marginBottom: 0 }}>
+                      {/* Description hidden here */}
+                      {/* <Typography.Paragraph style={{ color: '#b0a074', fontSize: 14, minHeight: 40, marginBottom: 0 }}>
                         {item.description}
-                      </Typography.Paragraph>
+                      </Typography.Paragraph> */}
                       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
                         <Button
                           type="primary"
@@ -189,7 +201,49 @@ const Menu = () => {
           </Row>
         </div>
       </div>
-      {/* Responsive styles for Menu page */}
+      <Modal
+        open={modalOpen}
+        onCancel={handleModalClose}
+        footer={null}
+        centered
+        width={400}
+        bodyStyle={{ padding: 24, background: '#23211f', borderRadius: 18, color: '#fff' }}
+      >
+        {modalItem && (
+          <div style={{ textAlign: 'center' }}>
+            <img
+              src={modalItem.photo}
+              alt={modalItem.name}
+              style={{
+                width: '100%',
+                maxHeight: 220,
+                objectFit: 'cover',
+                borderRadius: 12,
+                marginBottom: 18,
+                background: '#222'
+              }}
+              onError={e => { e.target.onerror = null; e.target.src = '/fallback-image.png'; }}
+            />
+            <Typography.Title level={4} style={{ color: '#fff', marginBottom: 8 }}>
+              {modalItem.name}
+            </Typography.Title>
+            <Typography.Text style={{ color: '#d89500', fontWeight: 600, fontSize: 16 }}>
+              {modalItem.category}
+            </Typography.Text>
+            <div style={{ margin: '12px 0', color: '#fff', fontSize: 18, fontWeight: 700 }}>
+              ₱{modalItem.price}
+              {modalItem.weight && (
+                <span style={{ color: '#b0a074', fontWeight: 400, fontSize: 15, marginLeft: 8 }}>
+                  {modalItem.weight}g
+                </span>
+              )}
+            </div>
+            <Typography.Paragraph style={{ color: '#b0a074', fontSize: 15, marginBottom: 0 }}>
+              {modalItem.description}
+            </Typography.Paragraph>
+          </div>
+        )}
+      </Modal>
       <style>
         {`
         .menu-flex-row {

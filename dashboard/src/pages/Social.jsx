@@ -5,7 +5,7 @@ import './About.css';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
-const NAVBAR_HEIGHT = 90; // px
+const NAVBAR_HEIGHT = 90;
 
 const Social = () => {
   return (
@@ -13,9 +13,8 @@ const Social = () => {
       <div style={styles.darkOverlay}></div>
       <div className="about-content about-fadein location-about-content">
         <div className="LeftAbout location-leftabout">
-          {/* You can use an image or illustration for socials */}
           <img
-            src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+            src="https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/494383363_122217592604248712_1015292225461852519_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeE5eFN7X7HwmpQatFUOy0fsNLBMSDCYGL80sExIMJgYv2TobyaKXzHNpkDxhtOHg6BN0DjXhU8T6ikTOjmPgiQW&_nc_ohc=37n_Qt4I57sQ7kNvwEvMwjm&_nc_oc=Adkc2beUgnqbERplsWvy2b7cfvJ4iuonPGv0mmu7W8WA6fRYyzV1WixYItvBgVtf0p4&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=b6KV0IMUtNuLXcEXgk0I7A&oh=00_AfK_M3t049kM3ZASgKrkxuoDUO0O26wvrZe66oc0mjfWmw&oe=683E3198"
             alt="Social Media"
             style={styles.socialImg}
           />
@@ -167,9 +166,9 @@ const styles = {
     zIndex: 1,
   },
   socialImg: {
-    width: '60%',
-    maxWidth: 220,
-    minWidth: 120,
+    width: '90%',         // increased from 60%
+    maxWidth: 350,        // increased from 220
+    minWidth: 180,        // increased from 120
     borderRadius: 24,
     boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
     background: '#222',

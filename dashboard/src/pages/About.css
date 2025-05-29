@@ -17,6 +17,7 @@
   justify-content: center;
   align-items: stretch;
   min-height: 60vh;
+  max-height: 90vh;
   width: 90vw;
   max-width: 900px;
   margin: 0 auto;
@@ -115,4 +116,23 @@
     min-width: 0;
     margin-top: 1rem;
   }
+}
+
+.about-carousel {
+  position: relative; /* was absolute */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-carousel .slick-slide {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }

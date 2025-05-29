@@ -12,11 +12,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/gumorning', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+// Connect to MongoDB Atlas
+mongoose.connect(
+    'mongodb+srv://hedlkandres:mOZgt9RJlb4P7h8x@cluster0.lj5iwsd.mongodb.net/gumorning?retryWrites=true&w=majority',
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    }
+);
 
 // Serve uploaded images statically
 const uploadsDir = path.join(__dirname, 'uploads');
