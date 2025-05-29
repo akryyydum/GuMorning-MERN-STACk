@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   HomeOutlined,
   InfoCircleOutlined,
@@ -10,12 +10,70 @@ import {
 } from '@ant-design/icons';
 import './Navbar.css';
 import logo from '../assets/logo.png';
+import { Button, Modal } from 'antd'; // import Modal
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [role, setRole] = useState(null);
+  const [userName, setUserName] = useState('');
+  const [profileDropdown, setProfileDropdown] = useState(false);
+  const [logoutConfirm, setLogoutConfirm] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const profileRef = useRef(null);
+
+  useEffect(() => {
+    setRole(localStorage.getItem('role'));
+    setUserName(localStorage.getItem('fullName') || '');
+    setProfileDropdown(false); // close dropdown on route change
+  }, [location.pathname]);
+
+  // Close dropdown if clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target)
+      ) {
+        setProfileDropdown(false);
+      }
+    }
+    if (profileDropdown) {
+      document.addEventListener('click', handleClickOutside);
+    }
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [profileDropdown]);
 
   const handleHamburgerClick = () => setOpen(!open);
+
+  const handleProfileClick = (e) => {
+    e.preventDefault();
+    if (userName) {
+      setProfileDropdown((prev) => !prev);
+    } else {
+      setProfileDropdown(false);
+      navigate('/profile');
+    }
+  };
+
+  const handleLogout = () => {
+    setLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('fullName');
+    setUserName('');
+    setRole(null);
+    setProfileDropdown(false);
+    setLogoutConfirm(false);
+    navigate('/');
+  };
+
+  const cancelLogout = () => {
+    setLogoutConfirm(false);
+  };
 
   return (
     <nav className="navbar">
@@ -66,7 +124,18 @@ const Navbar = () => {
               Menu
             </Link>
           </li>
-         
+          {role === 'admin' && (
+            <li>
+              <Link
+                to="/admin"
+                className={`navbar-link${location.pathname === '/admin' ? ' navbar-link-active' : ''}`}
+                onClick={() => setOpen(false)}
+              >
+                <AppstoreOutlined style={{ marginRight: 6 }} />
+                Admin
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
       <div className="navbar-section navbar-section-center">
@@ -108,17 +177,82 @@ const Navbar = () => {
               <ShareAltOutlined style={{ marginRight: 6 }} />
             </Link>
           </li>
-          <li>
-            <Link
-          to="/profile"
-          className={`navbar-link${location.pathname === '/profile' ? ' navbar-link-active' : ''}`}
-          onClick={() => setOpen(false)}
-        >
-          <UserOutlined style={{ marginRight: 6 }} />
-        </Link>
+          <li style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div
+              className={`navbar-link${location.pathname === '/profile' ? ' navbar-link-active' : ''}`}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '0 8px',
+                fontSize: 18,
+                cursor: 'pointer',
+                userSelect: 'none'
+              }}
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                if (!userName) navigate('/profile');
+              }}
+              onKeyDown={e => {
+                if ((e.key === 'Enter' || e.key === ' ') && !userName) navigate('/profile');
+              }}
+            >
+              <UserOutlined style={{ marginRight: userName ? 6 : 0 }} />
+              {userName && (
+                <span
+                  style={{
+                    color: '#251d1b',
+                    fontWeight: 500,
+                    fontSize: 15,
+                    marginLeft: 2,
+                    maxWidth: 100,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}
+                  title={userName}
+                >
+                  {userName}
+                </span>
+              )}
+            </div>
+            {userName && (
+              <>
+                <Button
+                  size="small"
+                  style={{
+                    marginLeft: 8,
+                    background: '#fff',
+                    color: '#d89500',
+                    border: '1px solid #d89500',
+                    fontWeight: 600,
+                    borderRadius: 6,
+                    padding: '0 12px',
+                    height: 28,
+                    lineHeight: '26px',
+                    fontSize: 14,
+                    boxShadow: 'none'
+                  }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+                <Modal
+                  open={logoutConfirm}
+                  onOk={confirmLogout}
+                  onCancel={cancelLogout}
+                  okText="Yes, Logout"
+                  cancelText="Cancel"
+                  title="Confirm Logout"
+                  centered
+                  closable={false}
+                >
+                  Are you sure you want to logout?
+                </Modal>
+              </>
+            )}
           </li>
         </ul>
-        
       </div>
     </nav>
   );

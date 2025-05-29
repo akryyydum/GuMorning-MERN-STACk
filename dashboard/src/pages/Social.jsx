@@ -1,54 +1,75 @@
 import React from 'react';
 import { Typography } from 'antd';
-import { EnvironmentOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { FacebookFilled, InstagramFilled, MailOutlined } from '@ant-design/icons';
 import './About.css';
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph, Text, Link } = Typography;
 
-const NAVBAR_HEIGHT = 90; // px, adjust if your navbar is taller/shorter
+const NAVBAR_HEIGHT = 90; // px
 
-const Location = () => {
+const Social = () => {
   return (
     <div style={{ ...styles.container, paddingTop: NAVBAR_HEIGHT }} className="about-container location-responsive-container">
       <div style={styles.darkOverlay}></div>
       <div className="about-content about-fadein location-about-content">
         <div className="LeftAbout location-leftabout">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d761.5885504015126!2d121.14809771571304!3d16.48215230188949!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3390450073b65141%3A0x5469a9d0560b39c4!2sGumorning%20NV!5e0!3m2!1sen!2sph!4v1747832832339!5m2!1sen!2sph"
-            width="100%"
-            height="100%"
-            style={styles.map}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="GuMorning Location"
-          ></iframe>
+          {/* You can use an image or illustration for socials */}
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+            alt="Social Media"
+            style={styles.socialImg}
+          />
         </div>
         <div className="RightAbout location-rightabout">
           <Title
             level={3}
             style={{ color: '#fff', fontSize: '2rem', marginBottom: '12px' }}
           >
-            <EnvironmentOutlined style={{ ...styles.icon, fontSize: '2rem' }} /> Address
+            <FacebookFilled style={{ ...styles.icon, fontSize: '2rem' }} /> Facebook
           </Title>
           <Paragraph style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '24px' }}>
-            13 Basa Street<br />
-            Bayombong, Nueva Vizcaya<br />
-            Philippines
+            <a
+              href="https://www.facebook.com/gumorningnv"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#d89500', fontWeight: 500 }}
+            >
+              facebook.com/gumorningnv
+            </a>
           </Paragraph>
           <Title
             level={3}
             style={{ color: '#fff', fontSize: '2rem', marginBottom: '12px' }}
           >
-            <ClockCircleOutlined style={{ ...styles.icon, fontSize: '2rem' }} /> Hours
+            <InstagramFilled style={{ ...styles.icon, fontSize: '2rem' }} /> Instagram
+          </Title>
+          <Paragraph style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '24px' }}>
+            <a
+              href="https://www.instagram.com/gumorningnv"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#d89500', fontWeight: 500 }}
+            >
+              @gumorningnv
+            </a>
+          </Paragraph>
+          <Title
+            level={3}
+            style={{ color: '#fff', fontSize: '2rem', marginBottom: '12px' }}
+          >
+            <MailOutlined style={{ ...styles.icon, fontSize: '2rem' }} /> Email
           </Title>
           <Paragraph style={{ color: '#fff', fontSize: '1.25rem' }}>
-            <Text strong style={{ color: '#fff', fontSize: '1.1rem' }}>Monday - Saturday:</Text> 10:00 AM - 9:00 PM<br />
-            <Text strong style={{ color: '#fff', fontSize: '1.1rem' }}>Sunday:</Text> 12:00 PM - 9:00 PM
+            <a
+              href="mailto:gumorningnv@gmail.com"
+              style={{ color: '#d89500', fontWeight: 500 }}
+            >
+              gumorningnv@gmail.com
+            </a>
           </Paragraph>
         </div>
       </div>
-      {/* Responsive styles for Location page */}
+      {/* Responsive styles for Socials page */}
       <style>
         {`
         .location-responsive-container {
@@ -73,6 +94,8 @@ const Location = () => {
           max-width: 600px;
           height: 400px;
           display: flex;
+          align-items: center;
+          justify-content: center;
         }
         .location-rightabout {
           flex: 1;
@@ -118,11 +141,11 @@ const Location = () => {
 
 const styles = {
   container: {
-    position: 'relative', // changed from 'fixed'
+    position: 'relative',
     top: 0,
     left: 0,
     width: '100vw',
-    minHeight: '100vh', // changed from height: '100vh'
+    minHeight: '100vh',
     margin: 0,
     padding: 0,
     backgroundImage: 'url("https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/479521569_122199922274248712_924707889322222752_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF3dAvErIvxcaPawQSyulS4LdntaQtbg8ot2e1pC1uDyjCnlpMDpXwn926pC0namsFv0VaEePaF3IsHjnxQ6cGP&_nc_ohc=gYb0pxvsPcEQ7kNvwEVd2Um&_nc_oc=AdlJgr-eESjJoNg5yXA4Www8c34ZKNH0M5cu9adwIFldRbiNt_AU08twZbjCdCwmzZY&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=ApECQFHyvHUy6i7gwcCW0g&oh=00_AfIe2hJbARqn-LHGkpNMQ4XkafrhP4YI6JBVYzUBZjU7AA&oe=683CEF5B")',
@@ -133,7 +156,6 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'flex-start',
     zIndex: 0,
-    // paddingTop is set dynamically above
   },
   darkOverlay: {
     position: 'absolute',
@@ -144,14 +166,15 @@ const styles = {
     background: 'rgba(0,0,0,0.82)',
     zIndex: 1,
   },
-  map: {
-    border: 0,
-    borderRadius: 16,
+  socialImg: {
+    width: '60%',
+    maxWidth: 220,
+    minWidth: 120,
+    borderRadius: 24,
     boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
-    width: '100%',
-    height: '100%',
-    minHeight: 180,
     background: '#222',
+    objectFit: 'contain',
+    margin: 'auto'
   },
   icon: {
     color: '#d89500',
@@ -159,4 +182,4 @@ const styles = {
   }
 };
 
-export default Location;
+export default Social;

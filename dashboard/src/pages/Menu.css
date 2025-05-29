@@ -24,39 +24,12 @@
   box-shadow: 0 12px 32px rgba(216,149,0,0.18);
 }
 
-.menu-selected-slide {
-  animation-duration: 0.5s;
-  animation-fill-mode: both;
+.menu-category-btn {
+  transition: background 0.2s, color 0.2s, font-weight 0.2s;
+  opacity: 0;
+  animation: menuFadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
-.menu-slide-right {
-  animation-name: menuSlideInRight;
-}
-.menu-slide-left {
-  animation-name: menuSlideInLeft;
-}
-
-@keyframes menuSlideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-@keyframes menuSlideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.menu-list-card-selected {
+.menu-category-btn-selected {
   border: 2px solid #d89500 !important;
   box-shadow: 0 0 0 2px #d8950033;
   opacity: 1 !important;

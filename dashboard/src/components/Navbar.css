@@ -4,16 +4,20 @@ body, * {
 }
 
 .navbar {
-    font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', sans-serif;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #d89500;
   padding: 0.8rem 2rem;
   color: #251d1b;
-  position: sticky;
+  position: fixed; /* Changed from sticky to fixed */
   top: 0;
+  left: 0;
+  width: 100%; /* Changed from 100vw to 100% */
   z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-sizing: border-box; /* Ensure padding is included in width */
 }
 
 .navbar-section {
@@ -135,7 +139,11 @@ body, * {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
+  .navbar {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
   .navbar-section-center {
     flex: 2;
   }
@@ -147,8 +155,8 @@ body, * {
 
 @media screen and (max-width: 768px) {
   .navbar-links {
-    flex-direction: column !important; /* Only change to column on mobile */
-    background: #e0a000; /* Changed from #222 to a lighter shade of the navbar */
+    flex-direction: column !important;
+    background: #e0a000;
     position: absolute;
     top: 100%;
     left: 0;
@@ -156,11 +164,11 @@ body, * {
     padding: 1rem 0;
     gap: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 10;
-    transform: translateX(-200%); /* Fully hide links */
+    z-index: 9999; /* <-- Increase z-index so menu is always on top */
+    transform: translateX(-200%);
   }
   .navbar-links.navbar-links-open {
-    transform: translateX(0); /* Show links */
+    transform: translateX(0);
   }
   .navbar-hamburger {
     display: flex;

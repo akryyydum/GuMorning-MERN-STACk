@@ -52,7 +52,7 @@ const Home = () => {
                   textAlign: 'center',
                 }}
               >
-                Your one-stop dashboard for everything you need.
+                Nurturing an Inclusive Comminity. Championing Individuality. Deeply Rooted in Supporting Local.
               </Paragraph>
             </div>
           </Col>
@@ -88,7 +88,7 @@ const styles = {
     padding: 0,
     overflow: 'hidden',
     backgroundImage:
-      'url("https://scontent.fmnl17-5.fna.fbcdn.net/v/t51.75761-15/488933159_17890653864219780_3301368756016846111_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGPCxxzDwDL-zYDBbHYTJXuK6noxaTtbOYrqejFpO1s5go_LxV6DKK0Z6_MDkR-mtyCICEt8Dy_4tvbDpsyBbwS&_nc_ohc=fl8K2jbr5KQQ7kNvwHcfvbt&_nc_oc=Adnm57eWEZe2Z4DSb8paJ_BfcOhN5I4hZW1WmrTL6JOWFnC5tdHMcDnw6A4V8OZSQLw&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=KPxs1sqvqQM1ra38GGHwmA&oh=00_AfLaCRw0Iw721-OBnF_kUZDXW1-36BLP2zHl959g0FY5Kw&oe=68337CAF")',
+      'url("https://scontent.fmnl17-3.fna.fbcdn.net/v/t51.75761-15/481449866_17885220096219780_7333015284803729390_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEtl13ljfCu75w51vaSWu6zOAwF_wxrfgs4DAX_DGt-C1MvBgan3_KlhpH7fSg0mcLFzckrh6u26NaZGfd2Gton&_nc_ohc=TpamLTTZzIkQ7kNvwFHG9nm&_nc_oc=AdlxHTlUxEL8NXmZ-CwttLv3_zHRv2MB92eWva3fHVAcQalPDOiyhS_LNoKDaMJl-H0&_nc_zt=23&_nc_ht=scontent.fmnl17-3.fna&_nc_gid=PNMlBiI5R9LZd6eI2CzC9g&oh=00_AfJImLX-qtApeoJV-yCYishrbKYpcKxwPTva2fVVc-fCCw&oe=683CC1B6")',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -106,7 +106,7 @@ const styles = {
     justifyContent: 'center',
   },
   left: {
-    padding: '1rem 1rem', // Reduced top padding from 2rem to 1rem
+    padding: '1rem 1rem', 
     width: '100%',
   },
   bottomButtonContainer: {

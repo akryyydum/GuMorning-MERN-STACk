@@ -5,6 +5,7 @@ const menuSchema = new mongoose.Schema({
   description: String,
   price: { type: Number, required: true },
   photo: String,
+  category: { type: String, required: true }, // Added category
   // weight: Number, // Uncomment if you want to support weight
   // Note: Store only permanent URLs for 'photo'
 });

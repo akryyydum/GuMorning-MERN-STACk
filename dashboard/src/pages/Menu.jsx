@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Typography, Skeleton, Button, Input } from 'antd';
+import { Row, Col, Card, Typography, Skeleton, Button } from 'antd';
 import { CoffeeOutlined } from '@ant-design/icons';
-import './Menu.css'; // Import the CSS file for animations
+import './Menu.css';
 
-const { Title, Paragraph } = Typography;
-const { Search } = Input;
-const NAVBAR_HEIGHT = 20;
+const { Title } = Typography;
+const NAVBAR_HEIGHT = 90; // Set to match your navbar height
 const API_URL = 'http://localhost:5000/api';
+
+const categoryOptions = [
+  "All",
+  "Tea",
+  "Pastries",
+  "Cookies",
+  "Muffins",
+  "Smoothies",
+  "Coffee",
+  "Frappe"
+];
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(categoryOptions[0]);
 
   useEffect(() => {
     fetch(`${API_URL}/menu`)
@@ -22,12 +32,9 @@ const Menu = () => {
       });
   }, []);
 
-  // Filtered menu based on search
-  const filteredMenu = menu.filter(
-    item =>
-      item.name?.toLowerCase().includes(search.toLowerCase()) ||
-      item.description?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredMenu = selectedCategory === "All"
+    ? menu
+    : menu.filter(item => item.category === selectedCategory);
 
   return (
     <div
@@ -58,112 +65,189 @@ const Menu = () => {
           Our Menu
         </Title>
       </div>
-      <div style={{ marginBottom: 24, zIndex: 2, position: 'relative', textAlign: 'center' }}>
-        <Search
-          placeholder="Search menu..."
-          allowClear
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          style={{
-            maxWidth: 320,
-            background: 'rgba(0,0,0,0.7)',
-            borderRadius: 8,
-            border: '1.5px solid #d89500',
-            color: '#fff',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
-          }}
-          className="menu-search-bar"
-          inputStyle={{
-            background: 'rgba(0,0,0,0.7)',
-            color: '#fff',
-            border: 'none',
-          }}
-        />
-      </div>
-      <Row
-        gutter={[32, 32]}
-        justify="center"
-        style={{
-          ...styles.contentRow,
-          minHeight: '60vh',
-          position: 'relative',
-          zIndex: 2,
-        }}
-        className="menu-fadein"
-      >
-        {loading
-          ? Array.from({ length: 8 }).map((_, idx) => (
-              <Col xs={24} sm={12} md={8} lg={6} key={idx}>
-                <Card
-                  loading
-                  className="bakery-card"
-                  style={styles.bakeryCard}
-                  cover={<Skeleton.Image style={{ width: '100%', height: 160, borderRadius: '18px 18px 0 0' }} />}
-                />
-              </Col>
-            ))
-          : filteredMenu.map((item) => (
-              <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
-                <Card
-                  hoverable
-                  className="bakery-card"
-                  style={styles.bakeryCard}
-                  cover={
-                    <img
-                      src={item.photo}
-                      alt={item.name}
-                      style={styles.bakeryCardImg}
-                      onError={e => { e.target.onerror = null; e.target.src = '/fallback-image.png'; }}
+      <div className="menu-flex-row" style={styles.flexRow}>
+        {/* Left: Categories */}
+        <div style={styles.categorySidebar} className="menu-category-sidebar">
+          <div style={{ marginBottom: 18, color: '#fff', fontWeight: 600, fontSize: 18, letterSpacing: 1 }}>
+            Categories
+          </div>
+          <div>
+            {categoryOptions.map(cat => (
+              <Button
+                key={cat}
+                type={selectedCategory === cat ? "primary" : "text"}
+                block
+                style={{
+                  marginBottom: 8,
+                  background: selectedCategory === cat ? '#d89500' : 'rgba(0,0,0,0.15)',
+                  color: selectedCategory === cat ? '#fff' : '#fff',
+                  fontWeight: selectedCategory === cat ? 700 : 500,
+                  borderRadius: 8,
+                  border: 'none',
+                  textAlign: 'left',
+                  transition: 'background 0.2s'
+                }}
+                onClick={() => setSelectedCategory(cat)}
+              >
+                {cat}
+              </Button>
+            ))}
+          </div>
+        </div>
+        {/* Right: Products */}
+        <div
+          style={styles.productsSection}
+          className="menu-products-section"
+        >
+          <Row
+            gutter={[32, 32]}
+            justify="start"
+            style={{
+              ...styles.contentRow,
+              minHeight: '60vh',
+              position: 'relative',
+              zIndex: 2,
+              background: 'transparent',
+            }}
+            className="menu-fadein"
+          >
+            {loading
+              ? Array.from({ length: 8 }).map((_, idx) => (
+                  <Col xs={24} sm={12} md={8} lg={6} key={idx}>
+                    <Card
+                      loading
+                      className="bakery-card"
+                      style={styles.bakeryCard}
+                      cover={<Skeleton.Image style={{ width: '100%', height: 160, borderRadius: '18px 18px 0 0' }} />}
                     />
-                  }
-                  bodyStyle={{
-                    padding: 18,
-                    background: 'transparent',
-                    color: '#fff',
-                    borderRadius: '0 0 18px 18px',
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                    <Typography.Text strong style={{ color: '#fff', fontSize: 18 }}>
-                      ₱{item.price}
-                    </Typography.Text>
-                    <Typography.Text style={{ color: '#b0a074', fontSize: 15 }}>
-                      {item.weight ? `${item.weight}g` : ''}
-                    </Typography.Text>
-                  </div>
-                  <Typography.Title level={5} style={{ color: '#fff', marginBottom: 6, fontWeight: 600, fontSize: 18, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {item.name}
-                  </Typography.Title>
-                  <Typography.Paragraph style={{ color: '#b0a074', fontSize: 14, minHeight: 40, marginBottom: 0 }}>
-                    {item.description}
-                  </Typography.Paragraph>
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
-                    <Button
-                      type="primary"
-                      style={{
-                        background: '#d89500',
-                        border: 'none',
-                        borderRadius: 6,
-                        fontWeight: 600,
-                        fontSize: 15,
-                        padding: '2px 22px',
-                        boxShadow: '0 2px 8px rgba(216,149,0,0.10)'
+                  </Col>
+                ))
+              : filteredMenu.map((item) => (
+                  <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
+                    <Card
+                      hoverable
+                      className="bakery-card"
+                      style={styles.bakeryCard}
+                      cover={
+                        <img
+                          src={item.photo}
+                          alt={item.name}
+                          style={styles.bakeryCardImg}
+                          onError={e => { e.target.onerror = null; e.target.src = '/fallback-image.png'; }}
+                        />
+                      }
+                      bodyStyle={{
+                        padding: 18,
+                        background: 'transparent',
+                        color: '#fff',
+                        borderRadius: '0 0 18px 18px',
                       }}
                     >
-                      Add
-                    </Button>
-                  </div>
-                </Card>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                        <Typography.Text strong style={{ color: '#fff', fontSize: 18 }}>
+                          ₱{item.price}
+                        </Typography.Text>
+                        <Typography.Text style={{ color: '#b0a074', fontSize: 15 }}>
+                          {item.weight ? `${item.weight}g` : ''}
+                        </Typography.Text>
+                      </div>
+                      <Typography.Title level={5} style={{ color: '#fff', marginBottom: 6, fontWeight: 600, fontSize: 18, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {item.name}
+                      </Typography.Title>
+                      <Typography.Text style={{ color: '#d89500', fontSize: 14, fontWeight: 500, letterSpacing: 1 }}>
+                        {item.category}
+                      </Typography.Text>
+                      <Typography.Paragraph style={{ color: '#b0a074', fontSize: 14, minHeight: 40, marginBottom: 0 }}>
+                        {item.description}
+                      </Typography.Paragraph>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+                        <Button
+                          type="primary"
+                          style={{
+                            background: '#d89500',
+                            border: 'none',
+                            borderRadius: 6,
+                            fontWeight: 600,
+                            fontSize: 15,
+                            padding: '2px 22px',
+                            boxShadow: '0 2px 8px rgba(216,149,0,0.10)'
+                          }}
+                        >
+                          Add
+                        </Button>
+                      </div>
+                    </Card>
+                  </Col>
+                ))}
+            {!loading && filteredMenu.length === 0 && (
+              <Col span={24}>
+                <div style={{ color: '#fff', textAlign: 'center', marginTop: 40, fontSize: 18 }}>
+                  No menu items found.
+                </div>
               </Col>
-            ))}
-        {!loading && filteredMenu.length === 0 && (
-          <Col span={24}>
-            <div style={{ color: '#fff', textAlign: 'center', marginTop: 40, fontSize: 18 }}>
-              No menu items found.
-            </div>
-          </Col>
-        )}
-      </Row>
+            )}
+          </Row>
+        </div>
+      </div>
+      {/* Responsive styles for Menu page */}
+      <style>
+        {`
+        .menu-flex-row {
+          display: flex;
+          flex-direction: row;
+          gap: 32px;
+        }
+        @media (max-width: 900px) {
+          .menu-flex-row {
+            flex-direction: column;
+            gap: 18px;
+            padding: 0 2vw 32px 2vw;
+          }
+          .menu-category-sidebar {
+            max-width: 100% !important;
+            width: 100% !important;
+            margin-bottom: 0;
+            margin-top: 0;
+            position: static !important;
+            top: unset !important;
+          }
+          .menu-products-section {
+            max-width: 100% !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+          }
+          .menu-products-section > .ant-row {
+            width: 100% !important;
+            margin: 0 !important;
+          }
+        }
+        @media (max-width: 600px) {
+          .menu-title {
+            font-size: 1.3rem !important;
+          }
+          .menu-flex-row {
+            padding: 0 0.5vw 18px 0.5vw;
+            gap: 10px;
+          }
+          .menu-category-sidebar {
+            padding: 12px 6px !important;
+            font-size: 15px !important;
+          }
+          .menu-products-section {
+            min-width: 0 !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+          }
+          .menu-products-section > .ant-row {
+            width: 100% !important;
+            margin: 0 !important;
+          }
+        }
+        `}
+      </style>
     </div>
   );
 };
@@ -174,9 +258,8 @@ const styles = {
     width: '100%',
     minHeight: '100vh',
     padding: 0,
-    overflow: 'hidden',
     backgroundImage:
-      'url("https://scontent.fmnl17-8.fna.fbcdn.net/v/t51.75761-15/487954215_17889879882219780_7558332685967466800_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFWv5Ue2t1mbs27GHYLyZHV4nGBuwxhK1ricYG7DGErWurqUoLGdbqgsLHUiDb9gJctPiTPCrwrTNojHgAba3wc&_nc_ohc=hHv-jVRwz3oQ7kNvwGFlsym&_nc_oc=Adlgs0Rlc-hCCVsZzVz1dLamPZwd_NgUqSfykT9NrVLeEwLBuWeFWcpfItmyl7VOZbs&_nc_zt=23&_nc_ht=scontent.fmnl17-8.fna&_nc_gid=EBXCbrcQAzJ8z8ZVNitV0A&oh=00_AfLlKHht_yHMKreZjvDUiQN0KfV_9zQLWaDu8qyyvr0jlQ&oe=68339377")',
+      'url("https://scontent.fmnl17-7.fna.fbcdn.net/v/t51.75761-15/487954215_17889879861219780_3243142726285693171_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEUfymEi4pSsIWyeoU5PKnhOLHbiSZRaAY4sduJJlFoBl2kvs6EL9xJddpg2BjE9HniX1QQCN0DWXuuQ9-_2GqB&_nc_ohc=FK7BDfnalCsQ7kNvwE6uL_E&_nc_oc=AdkdVmheFqZOEw_eTb2CiXwDBIimF5OlIPt5xqaZDs7jMnDlxkRX7rUT6TfKvKEcSzY&_nc_zt=23&_nc_ht=scontent.fmnl17-7.fna&_nc_gid=JrdXLStsukEDXfUO3k6qLQ&oh=00_AfICweF-P3cU3-kGzojYVeNnRKtRZWGddEtsZoMuKvIxHQ&oe=683CF805")',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -190,12 +273,44 @@ const styles = {
     background: 'rgba(0,0,0,0.88)',
     zIndex: 1,
   },
+  flexRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'relative',
+    zIndex: 2,
+    maxWidth: 1400,
+    margin: '0 auto',
+    width: '100%',
+    minHeight: '70vh',
+    padding: '0 10px 40px 10px',
+    gap: 32,
+  },
+  categorySidebar: {
+    minWidth: 180,
+    maxWidth: 220,
+    background: 'rgba(0,0,0,0.55)',
+    borderRadius: 16,
+    padding: '24px 16px',
+    marginTop: 12,
+    marginBottom: 12,
+    boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+    height: 'fit-content',
+    alignSelf: 'flex-start',
+    position: 'sticky',
+    top: 40,
+    zIndex: 3,
+  },
+  productsSection: {
+    flex: 1,
+    minWidth: 0,
+    zIndex: 2,
+  },
   contentRow: {
     margin: 0,
     alignItems: 'stretch',
     position: 'relative',
     zIndex: 2,
-    padding: '0 10px 40px 10px',
+    padding: 0,
   },
   bakeryCard: {
     borderRadius: 18,

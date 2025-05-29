@@ -11,9 +11,11 @@ import {
   Tabs,
   Popconfirm,
   Space,
-  Avatar
+  Avatar,
+  Select
 } from 'antd';
 import { PlusOutlined, UploadOutlined, EditOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 // API functions
 const API_URL = 'http://localhost:5000/api';
@@ -84,6 +86,16 @@ const Admin = () => {
   const [form] = Form.useForm();
   const [photoFile, setPhotoFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const navigate = useNavigate();
+
+  // Redirect to login if not authenticated or not admin
+  React.useEffect(() => {
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+    if (!token || role !== 'admin') {
+      navigate('/');
+    }
+  }, [navigate]);
 
   // Fetch menu items
   const loadMenu = async () => {
@@ -192,6 +204,7 @@ const Admin = () => {
         photo ? <Avatar shape="square" size={64} src={photo} /> : <Avatar shape="square" size={64} icon={<UserOutlined />} />,
     },
     { title: 'Name', dataIndex: 'name', key: 'name' },
+    { title: 'Category', dataIndex: 'category', key: 'category' }, // Added category column
     { title: 'Description', dataIndex: 'description', key: 'description' },
     { title: 'Price', dataIndex: 'price', key: 'price', render: (p) => `₱${p}` },
     {
@@ -210,6 +223,8 @@ const Admin = () => {
 
   const userColumns = [
     { title: 'Username', dataIndex: 'username', key: 'username' },
+    { title: 'Full Name', dataIndex: 'fullName', key: 'fullName' }, // Show full name
+    { title: 'Role', dataIndex: 'role', key: 'role' }, // Show role
     { title: 'Email', dataIndex: 'email', key: 'email' },
     {
       title: 'Actions',
@@ -223,7 +238,14 @@ const Admin = () => {
   ];
 
   return (
-    <div style={{ padding: 32 }}>
+    <div
+      style={{
+        padding: 32,
+        paddingTop: 120, // Add top padding for navbar (adjust if navbar height changes)
+        minHeight: '100vh',
+        background: '#faf8f3'
+      }}
+    >
       <Tabs defaultActiveKey="menu" items={[
         {
           key: 'menu',
@@ -255,6 +277,17 @@ const Admin = () => {
                 <Form form={form} layout="vertical">
                   <Form.Item name="name" label="Name" rules={[{ required: true }]}>
                     <Input />
+                  </Form.Item>
+                  <Form.Item name="category" label="Category" rules={[{ required: true }]}>
+                    <Select placeholder="Select a category">
+                      <Select.Option value="Tea">Tea</Select.Option>
+                      <Select.Option value="Pastries">Pastries</Select.Option>
+                      <Select.Option value="Cookies">Cookies</Select.Option>
+                      <Select.Option value="Muffins">Muffins</Select.Option>
+                      <Select.Option value="Smoothies">Smoothies</Select.Option>
+                      <Select.Option value="Coffee">Coffee</Select.Option>
+                      <Select.Option value="Frappe">Frappe</Select.Option>
+                    </Select>
                   </Form.Item>
                   <Form.Item name="description" label="Description" rules={[{ required: true }]}>
                     <Input.TextArea rows={3} />
