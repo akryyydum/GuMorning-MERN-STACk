@@ -118,12 +118,14 @@ const Menu = () => {
               position: 'relative',
               zIndex: 2,
               background: 'transparent',
+              width: '100%', // Ensure row takes full width
+              minWidth: 0,   // Prevent overflow issues
             }}
             className="menu-fadein"
           >
             {loading
               ? Array.from({ length: 8 }).map((_, idx) => (
-                  <Col xs={24} sm={12} md={8} lg={6} key={idx}>
+                  <Col xs={24} sm={12} md={8} lg={6} key={idx} style={{ width: '100%' }}>
                     <Card
                       loading
                       className="bakery-card"
@@ -133,7 +135,7 @@ const Menu = () => {
                   </Col>
                 ))
               : filteredMenu.map((item) => (
-                  <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
+                  <Col xs={24} sm={12} md={8} lg={6} key={item._id} style={{ width: '100%' }}>
                     <Card
                       hoverable
                       className="bakery-card"
@@ -192,7 +194,7 @@ const Menu = () => {
                   </Col>
                 ))}
             {!loading && filteredMenu.length === 0 && (
-              <Col span={24}>
+              <Col span={24} style={{ width: '100%' }}>
                 <div style={{ color: '#fff', textAlign: 'center', marginTop: 40, fontSize: 18 }}>
                   No menu items found.
                 </div>

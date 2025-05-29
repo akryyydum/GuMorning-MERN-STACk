@@ -112,3 +112,56 @@ html, body, #root {
   color: #fff !important;
   font-family: 'Poppins', sans-serif !important;
 }
+
+@media (max-width: 900px) {
+  .menu-flex-row {
+    flex-direction: column;
+    gap: 18px;
+    padding: 0 2vw 32px 2vw;
+  }
+  .menu-category-sidebar {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin-bottom: 0;
+    margin-top: 0;
+    position: static !important;
+    top: unset !important;
+  }
+  .menu-products-section {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .menu-products-section > .ant-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .menu-title {
+    font-size: 1.3rem !important;
+  }
+  .menu-flex-row {
+    padding: 0 0.5vw 18px 0.5vw;
+    gap: 10px;
+  }
+  .menu-category-sidebar {
+    padding: 12px 6px !important;
+    font-size: 15px !important;
+  }
+  .menu-products-section {
+    min-width: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .menu-products-section > .ant-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+}
