@@ -5,8 +5,7 @@ import './Menu.css';
 
 const { Title } = Typography;
 const NAVBAR_HEIGHT = 90; 
-// const API_URL = 'http://localhost:5000/api';
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+const API_URL = 'http://localhost:5000/api';
 
 const categoryOptions = [
   "All",
@@ -28,33 +27,10 @@ const Menu = () => {
 
   useEffect(() => {
     fetch(`${API_URL}/menu`)
-      .then(async res => {
-        if (!res.ok) {
-          // Try to parse error message, fallback to status text
-          let errMsg = 'Failed to fetch menu';
-          try {
-            const text = await res.text();
-            errMsg = text;
-          } catch {}
-          throw new Error(errMsg);
-        }
-        // Try to parse JSON, fallback to error
-        try {
-          return res.json();
-        } catch {
-          throw new Error('Invalid JSON response');
-        }
-      })
+      .then(res => res.json())
       .then(data => {
         setMenu(data);
         setLoading(false);
-      })
-      .catch(err => {
-        setMenu([]);
-        setLoading(false);
-        // Optionally show error to user
-        // message.error(err.message);
-        console.error('Menu fetch error:', err.message);
       });
   }, []);
 
