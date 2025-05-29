@@ -5,7 +5,7 @@ import './Menu.css';
 
 const { Title } = Typography;
 const NAVBAR_HEIGHT = 90; 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = '/api';
 
 const categoryOptions = [
   "All",

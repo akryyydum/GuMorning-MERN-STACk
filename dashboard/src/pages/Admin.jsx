@@ -18,7 +18,7 @@ import { PlusOutlined, UploadOutlined, EditOutlined, DeleteOutlined, UserOutline
 import { useNavigate } from 'react-router-dom';
 
 // API functions
-const API_URL = 'http://localhost:5000/api';
+const API_URL = '/api';
 
 const fetchMenuItems = async () => {
   const res = await fetch(`${API_URL}/menu`);
