@@ -27,10 +27,21 @@ const Menu = () => {
 
   useEffect(() => {
     fetch(`${API_URL}/menu`)
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text);
+        }
+        return res.json();
+      })
       .then(data => {
         setMenu(data);
         setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        // Optionally show error to user
+        console.error('API error:', err.message);
       });
   }, []);
 
