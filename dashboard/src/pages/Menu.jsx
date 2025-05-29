@@ -5,7 +5,7 @@ import './Menu.css';
 
 const { Title } = Typography;
 const NAVBAR_HEIGHT = 90; 
-const API_URL = '/api';
+const API_URL = 'http://localhost:5000/api';
 
 const categoryOptions = [
   "All",
@@ -27,21 +27,10 @@ const Menu = () => {
 
   useEffect(() => {
     fetch(`${API_URL}/menu`)
-      .then(async res => {
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text);
-        }
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
         setMenu(data);
         setLoading(false);
-      })
-      .catch(err => {
-        setLoading(false);
-        // Optionally show error to user
-        console.error('API error:', err.message);
       });
   }, []);
 
