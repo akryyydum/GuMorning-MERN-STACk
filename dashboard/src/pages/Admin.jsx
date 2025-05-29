@@ -18,7 +18,7 @@ import { PlusOutlined, UploadOutlined, EditOutlined, DeleteOutlined, UserOutline
 import { useNavigate } from 'react-router-dom';
 
 // API functions
-const API_URL = '/api';
+const API_URL = 'https://gu-morning-mern-sta-ck-7xje.vercel.app/admin';
 
 const fetchMenuItems = async () => {
   const res = await fetch(`${API_URL}/menu`);

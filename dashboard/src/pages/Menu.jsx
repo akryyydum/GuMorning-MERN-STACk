@@ -5,7 +5,7 @@ import './Menu.css';
 
 const { Title } = Typography;
 const NAVBAR_HEIGHT = 90; 
-const API_URL = '/api'; // Use relative path for API
+const API_URL = 'https://gu-morning-mern-sta-ck-7xje.vercel.app/profile'; // Use relative path for API
 
 const categoryOptions = [
   "All",
