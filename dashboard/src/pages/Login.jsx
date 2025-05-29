@@ -6,7 +6,6 @@ const { Title, Text } = Typography;
 const API_URL = 'http://localhost:5000/api';
 
 function generateIdNo() {
-  // Example: GM-YYYYMMDD-HHMMSS-4digit
   const now = new Date();
   const pad = n => n.toString().padStart(2, '0');
   const date = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
@@ -24,7 +23,6 @@ const Login = ({ onLogin }) => {
     setLoading(true);
     try {
       if (isSignup) {
-        // Use fullName only
         const signupData = { ...values, idNo: generateIdNo() };
         const res = await fetch(`${API_URL}/signup`, {
           method: 'POST',
@@ -44,11 +42,9 @@ const Login = ({ onLogin }) => {
         const data = await res.json();
         message.success('Login successful!');
         if (onLogin) onLogin(data.token || 'demo-token', data.user?.role || 'user');
-        // Optionally store token for session
         localStorage.setItem('token', data.token || 'demo-token');
         localStorage.setItem('role', data.user?.role || 'user');
-        localStorage.setItem('fullName', data.user?.fullName || data.user?.username || ''); // Store user's name
-        // Redirect to admin page after login
+        localStorage.setItem('fullName', data.user?.fullName || data.user?.username || '');
         navigate('/admin');
       }
     } catch (err) {
