@@ -14,7 +14,8 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
-app.listen(3000, () => console.log("Server ready on port 3000."));
+// REMOVE this line for Vercel compatibility
+// app.listen(3000, () => console.log("Server ready on port 3000."));
 
 module.exports = app;
 // Connect to MongoDB Atlas
@@ -155,7 +156,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+// });
