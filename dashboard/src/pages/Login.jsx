@@ -3,7 +3,7 @@ import { Form, Input, Button, Typography, message, Card, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
-const API_URL = 'https://gu-morning-mern-sta-ck-7xje.vercel.app/profile'; // Use relative path for API
+const API_URL = 'http://localhost:5000/api';
 
 function generateIdNo() {
   const now = new Date();
