@@ -28,10 +28,33 @@ const Menu = () => {
 
   useEffect(() => {
     fetch(`${API_URL}/menu`)
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          // Try to parse error message, fallback to status text
+          let errMsg = 'Failed to fetch menu';
+          try {
+            const text = await res.text();
+            errMsg = text;
+          } catch {}
+          throw new Error(errMsg);
+        }
+        // Try to parse JSON, fallback to error
+        try {
+          return res.json();
+        } catch {
+          throw new Error('Invalid JSON response');
+        }
+      })
       .then(data => {
         setMenu(data);
         setLoading(false);
+      })
+      .catch(err => {
+        setMenu([]);
+        setLoading(false);
+        // Optionally show error to user
+        // message.error(err.message);
+        console.error('Menu fetch error:', err.message);
       });
   }, []);
 
