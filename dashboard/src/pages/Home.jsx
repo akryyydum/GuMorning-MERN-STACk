@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Button, Typography } from 'antd';
-import './Home.css'; // Import the CSS file for animations
+import './Home.css'; 
 
 const { Title, Paragraph } = Typography;
 
@@ -16,12 +16,12 @@ const Home = () => {
             width: '100vw',
             height: '100vh',
             margin: 0,
-            flexDirection: 'column', // Changed from 'row' to 'column'
+            flexDirection: 'column', 
           }}
         >
           <Col
             xs={24}
-            md={18} // Increased from 14 to give more width for the centered content
+            md={18} 
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -32,7 +32,7 @@ const Home = () => {
           >
             <div style={styles.left}>
               <Title
-                className="animated-title" // Add animation class
+                className="animated-title" 
                 style={{
                   color: '#fff',
                   marginBottom: 0,
@@ -44,7 +44,7 @@ const Home = () => {
                 Welcome to GuMorning
               </Title>
               <Paragraph
-                className="animated-paragraph" // Add animation class
+                className="animated-paragraph" 
                 style={{
                   color: '#fff',
                   fontSize: '1.4rem',
@@ -58,10 +58,9 @@ const Home = () => {
           </Col>
         </Row>
 
-        {/* Button positioned at the bottom */}
         <div style={styles.bottomButtonContainer}>
           <Button
-            className="animated-button" // Add animation class
+            className="animated-button" 
             type="primary"
             size="large"
             style={styles.button}
@@ -95,7 +94,7 @@ const styles = {
     display: 'flex',
     alignItems: 'stretch',
     justifyContent: 'center',
-    fontFamily: "'Poppins', sans-serif", // Force Poppins font
+    fontFamily: "'Poppins', sans-serif",
   },
   overlay: {
     width: '100vw',
@@ -111,7 +110,7 @@ const styles = {
   },
   bottomButtonContainer: {
     position: 'absolute',
-    bottom: '5%', // Position from bottom
+    bottom: '5%',
     left: 0,
     right: 0,
     display: 'flex',
@@ -126,7 +125,7 @@ const styles = {
     fontSize: '1.3rem',
     padding: '1.5rem 2.5rem',
     marginTop: '0.5rem',
-    width: 'auto', // Changed from 100%
+    width: 'auto', 
     minWidth: 200,
   },
 };

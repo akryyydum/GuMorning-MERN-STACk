@@ -68,7 +68,6 @@ const Social = () => {
           </Paragraph>
         </div>
       </div>
-      {/* Responsive styles for Socials page */}
       <style>
         {`
         .location-responsive-container {
@@ -166,9 +165,9 @@ const styles = {
     zIndex: 1,
   },
   socialImg: {
-    width: '90%',         // increased from 60%
-    maxWidth: 350,        // increased from 220
-    minWidth: 180,        // increased from 120
+    width: '90%',         
+    maxWidth: 350,       
+    minWidth: 180,      
     borderRadius: 24,
     boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
     background: '#222',

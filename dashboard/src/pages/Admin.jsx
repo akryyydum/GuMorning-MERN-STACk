@@ -17,13 +17,11 @@ import {
 import { PlusOutlined, UploadOutlined, EditOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
-// API functions
 const API_URL = 'http://localhost:5000/api';
 
 const fetchMenuItems = async () => {
   const res = await fetch(`${API_URL}/menu`);
   if (!res.ok) {
-    // Try to parse error message, fallback to status text
     let errMsg = 'Failed to fetch menu items';
     try {
       const err = await res.json();
@@ -72,23 +70,25 @@ const deleteUser = async (id) => {
 };
 
 const Admin = () => {
-  // Menu state
   const [menu, setMenu] = useState([]);
   const [menuLoading, setMenuLoading] = useState(false);
   const [menuModalOpen, setMenuModalOpen] = useState(false);
   const [editingMenu, setEditingMenu] = useState(null);
 
-  // Users state
   const [users, setUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(false);
 
-  // Form
   const [form] = Form.useForm();
   const [photoFile, setPhotoFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
 
-  // Redirect to login if not authenticated or not admin
+  // Search/filter states
+  const [menuSearch, setMenuSearch] = useState('');
+  const [menuCategory, setMenuCategory] = useState('');
+  const [userSearch, setUserSearch] = useState('');
+  const [userRole, setUserRole] = useState('');
+
   React.useEffect(() => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
@@ -97,7 +97,6 @@ const Admin = () => {
     }
   }, [navigate]);
 
-  // Fetch menu items
   const loadMenu = async () => {
     setMenuLoading(true);
     try {
@@ -105,12 +104,11 @@ const Admin = () => {
       setMenu(data);
     } catch (err) {
       message.error(err.message || 'Failed to load menu');
-      setMenu([]); // Optionally clear menu on error
+      setMenu([]);
     }
     setMenuLoading(false);
   };
 
-  // Fetch users
   const loadUsers = async () => {
     setUsersLoading(true);
     const data = await fetchUsers();
@@ -123,7 +121,6 @@ const Admin = () => {
     loadUsers();
   }, []);
 
-  // Menu CRUD handlers
   const handleMenuModalOpen = (item = null) => {
     setEditingMenu(item);
     setPhotoFile(null);
@@ -146,7 +143,6 @@ const Admin = () => {
     try {
       const values = await form.validateFields();
       let photoUrl = editingMenu?.photo || '';
-      // If a file is selected, upload it and get the URL
       if (photoFile) {
         setUploading(true);
         const formData = new FormData();
@@ -187,14 +183,25 @@ const Admin = () => {
     loadMenu();
   };
 
-  // User handlers
   const handleUserDelete = async (user) => {
     await deleteUser(user._id);
     message.success('User deleted');
     loadUsers();
   };
 
-  // Table columns
+  // Filtered menu and users
+  const filteredMenu = menu.filter(item => {
+    const matchesSearch = item.name?.toLowerCase().includes(menuSearch.toLowerCase()) || item.description?.toLowerCase().includes(menuSearch.toLowerCase());
+    const matchesCategory = menuCategory ? item.category === menuCategory : true;
+    return matchesSearch && matchesCategory;
+  });
+
+  const filteredUsers = users.filter(user => {
+    const matchesSearch = user.username?.toLowerCase().includes(userSearch.toLowerCase()) || user.fullName?.toLowerCase().includes(userSearch.toLowerCase());
+    const matchesRole = userRole ? user.role === userRole : true;
+    return matchesSearch && matchesRole;
+  });
+
   const menuColumns = [
     {
       title: 'Photo',
@@ -204,7 +211,7 @@ const Admin = () => {
         photo ? <Avatar shape="square" size={64} src={photo} /> : <Avatar shape="square" size={64} icon={<UserOutlined />} />,
     },
     { title: 'Name', dataIndex: 'name', key: 'name' },
-    { title: 'Category', dataIndex: 'category', key: 'category' }, // Added category column
+    { title: 'Category', dataIndex: 'category', key: 'category' },
     { title: 'Description', dataIndex: 'description', key: 'description' },
     { title: 'Price', dataIndex: 'price', key: 'price', render: (p) => `₱${p}` },
     {
@@ -223,8 +230,8 @@ const Admin = () => {
 
   const userColumns = [
     { title: 'Username', dataIndex: 'username', key: 'username' },
-    { title: 'Full Name', dataIndex: 'fullName', key: 'fullName' }, // Show full name
-    { title: 'Role', dataIndex: 'role', key: 'role' }, // Show role
+    { title: 'Full Name', dataIndex: 'fullName', key: 'fullName' },
+    { title: 'Role', dataIndex: 'role', key: 'role' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     {
       title: 'Actions',
@@ -241,7 +248,7 @@ const Admin = () => {
     <div
       style={{
         padding: 32,
-        paddingTop: 120, // Add top padding for navbar (adjust if navbar height changes)
+        paddingTop: 120,
         minHeight: '100vh',
         background: '#faf8f3'
       }}
@@ -252,17 +259,46 @@ const Admin = () => {
           label: 'Menu Management',
           children: (
             <>
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                style={{ marginBottom: 16 }}
-                onClick={() => handleMenuModalOpen()}
-              >
-                Add Menu Item
-              </Button>
+              {/* Search and Filter Controls */}
+              <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+                <Input
+                  placeholder="Search menu..."
+                  value={menuSearch}
+                  onChange={e => setMenuSearch(e.target.value)}
+                  style={{ width: 200 }}
+                  allowClear
+                />
+                <Select
+                  placeholder="Filter by category"
+                  value={menuCategory || undefined}
+                  onChange={val => setMenuCategory(val)}
+                  allowClear
+                  style={{ width: 180 }}
+                >
+                  <Select.Option value="">All</Select.Option>
+                  <Select.Option value="Tea">Tea</Select.Option>
+                  <Select.Option value="Pastries">Pastries</Select.Option>
+                  <Select.Option value="Cookies">Cookies</Select.Option>
+                  <Select.Option value="Muffins">Muffins</Select.Option>
+                  <Select.Option value="Smoothies">Smoothies</Select.Option>
+                  <Select.Option value="Coffee">Coffee</Select.Option>
+                  <Select.Option value="Frappe">Frappe</Select.Option>
+                </Select>
+                <Button onClick={() => { setMenuSearch(''); setMenuCategory(''); }}>
+                  Clear Filters
+                </Button>
+                <Button
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  style={{ marginLeft: 'auto' }}
+                  onClick={() => handleMenuModalOpen()}
+                >
+                  Add Menu Item
+                </Button>
+              </div>
               <Table
                 columns={menuColumns}
-                dataSource={menu}
+                dataSource={filteredMenu}
                 loading={menuLoading}
                 rowKey="_id"
                 pagination={{ pageSize: 6 }}
@@ -302,7 +338,7 @@ const Admin = () => {
                     <Upload
                       beforeUpload={(file) => {
                         setPhotoFile(file);
-                        return false; // Prevent auto upload
+                        return false; 
                       }}
                       showUploadList={false}
                       accept="image/*"
@@ -338,13 +374,39 @@ const Admin = () => {
           key: 'users',
           label: 'User Management',
           children: (
-            <Table
-              columns={userColumns}
-              dataSource={users}
-              loading={usersLoading}
-              rowKey="_id"
-              pagination={{ pageSize: 8 }}
-            />
+            <>
+              {/* Search and Filter Controls */}
+              <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+                <Input
+                  placeholder="Search users..."
+                  value={userSearch}
+                  onChange={e => setUserSearch(e.target.value)}
+                  style={{ width: 200 }}
+                  allowClear
+                />
+                <Select
+                  placeholder="Filter by role"
+                  value={userRole || undefined}
+                  onChange={val => setUserRole(val)}
+                  allowClear
+                  style={{ width: 150 }}
+                >
+                  <Select.Option value="">All</Select.Option>
+                  <Select.Option value="admin">Admin</Select.Option>
+                  <Select.Option value="user">User</Select.Option>
+                </Select>
+                <Button onClick={() => { setUserSearch(''); setUserRole(''); }}>
+                  Clear Filters
+                </Button>
+              </div>
+              <Table
+                columns={userColumns}
+                dataSource={filteredUsers}
+                loading={usersLoading}
+                rowKey="_id"
+                pagination={{ pageSize: 8 }}
+              />
+            </>
           ),
         },
       ]} />

@@ -10,7 +10,9 @@ import {
 } from '@ant-design/icons';
 import './Navbar.css';
 import logo from '../assets/logo.png';
-import { Button, Modal } from 'antd'; // import Modal
+import { Button, Modal, Grid } from 'antd';
+
+const { useBreakpoint } = Grid;
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -21,14 +23,15 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const profileRef = useRef(null);
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
 
   useEffect(() => {
     setRole(localStorage.getItem('role'));
     setUserName(localStorage.getItem('fullName') || '');
-    setProfileDropdown(false); // close dropdown on route change
+    setProfileDropdown(false); 
   }, [location.pathname]);
 
-  // Close dropdown if clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -74,6 +77,95 @@ const Navbar = () => {
   const cancelLogout = () => {
     setLogoutConfirm(false);
   };
+
+  const RightLinks = (
+    <>
+      <li>
+        <Link
+          to="/social"
+          className={`navbar-link${location.pathname === '/social' ? ' navbar-link-active' : ''}`}
+          onClick={() => setOpen(false)}
+        >
+          <ShareAltOutlined style={{ marginRight: 6 }} />
+        </Link>
+      </li>
+      <li style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+        <div
+          className={`navbar-link${location.pathname === '/profile' ? ' navbar-link-active' : ''}`}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 8px',
+            fontSize: 18,
+            cursor: 'pointer',
+            userSelect: 'none'
+          }}
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            if (!userName) navigate('/profile');
+          }}
+          onKeyDown={e => {
+            if ((e.key === 'Enter' || e.key === ' ') && !userName) navigate('/profile');
+          }}
+        >
+          <UserOutlined style={{ marginRight: userName ? 6 : 0 }} />
+          {userName && (
+            <span
+              style={{
+                color: '#251d1b',
+                fontWeight: 500,
+                fontSize: 15,
+                marginLeft: 2,
+                maxWidth: 100,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+              }}
+              title={userName}
+            >
+              {userName}
+            </span>
+          )}
+        </div>
+        {userName && (
+          <>
+            <Button
+              size="small"
+              style={{
+                marginLeft: 8,
+                background: '#fff',
+                color: '#d89500',
+                border: '1px solid #d89500',
+                fontWeight: 600,
+                borderRadius: 6,
+                padding: '0 12px',
+                height: 28,
+                lineHeight: '26px',
+                fontSize: 14,
+                boxShadow: 'none'
+              }}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+            <Modal
+              open={logoutConfirm}
+              onOk={confirmLogout}
+              onCancel={cancelLogout}
+              okText="Yes, Logout"
+              cancelText="Cancel"
+              title="Confirm Logout"
+              centered
+              closable={false}
+            >
+              Are you sure you want to logout?
+            </Modal>
+          </>
+        )}
+      </li>
+    </>
+  );
 
   return (
     <nav className="navbar">
@@ -136,6 +228,7 @@ const Navbar = () => {
               </Link>
             </li>
           )}
+          {isMobile && RightLinks}
         </ul>
       </div>
       <div className="navbar-section navbar-section-center">
@@ -153,107 +246,26 @@ const Navbar = () => {
           />
         </div>
       </div>
-      <div className="navbar-section navbar-section-right" style={{ minWidth: 0, flexShrink: 1 }}>
-        <ul
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            margin: 0,
-            padding: 0,
-            listStyle: 'none',
-            flexWrap: 'wrap',
-            minWidth: 0,
-            maxWidth: '100%',
-            overflow: 'hidden'
-          }}
-        >
-          <li>
-            <Link
-              to="/social"
-              className={`navbar-link${location.pathname === '/social' ? ' navbar-link-active' : ''}`}
-              onClick={() => setOpen(false)}
-            >
-              <ShareAltOutlined style={{ marginRight: 6 }} />
-            </Link>
-          </li>
-          <li style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <div
-              className={`navbar-link${location.pathname === '/profile' ? ' navbar-link-active' : ''}`}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 8px',
-                fontSize: 18,
-                cursor: 'pointer',
-                userSelect: 'none'
-              }}
-              role="button"
-              tabIndex={0}
-              onClick={() => {
-                if (!userName) navigate('/profile');
-              }}
-              onKeyDown={e => {
-                if ((e.key === 'Enter' || e.key === ' ') && !userName) navigate('/profile');
-              }}
-            >
-              <UserOutlined style={{ marginRight: userName ? 6 : 0 }} />
-              {userName && (
-                <span
-                  style={{
-                    color: '#251d1b',
-                    fontWeight: 500,
-                    fontSize: 15,
-                    marginLeft: 2,
-                    maxWidth: 100,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
-                  }}
-                  title={userName}
-                >
-                  {userName}
-                </span>
-              )}
-            </div>
-            {userName && (
-              <>
-                <Button
-                  size="small"
-                  style={{
-                    marginLeft: 8,
-                    background: '#fff',
-                    color: '#d89500',
-                    border: '1px solid #d89500',
-                    fontWeight: 600,
-                    borderRadius: 6,
-                    padding: '0 12px',
-                    height: 28,
-                    lineHeight: '26px',
-                    fontSize: 14,
-                    boxShadow: 'none'
-                  }}
-                  onClick={handleLogout}
-                >
-                  Logout
-                </Button>
-                <Modal
-                  open={logoutConfirm}
-                  onOk={confirmLogout}
-                  onCancel={cancelLogout}
-                  okText="Yes, Logout"
-                  cancelText="Cancel"
-                  title="Confirm Logout"
-                  centered
-                  closable={false}
-                >
-                  Are you sure you want to logout?
-                </Modal>
-              </>
-            )}
-          </li>
-        </ul>
-      </div>
+      {!isMobile && (
+        <div className="navbar-section navbar-section-right" style={{ minWidth: 0, flexShrink: 1 }}>
+          <ul
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              margin: 0,
+              padding: 0,
+              listStyle: 'none',
+              flexWrap: 'wrap',
+              minWidth: 0,
+              maxWidth: '100%',
+              overflow: 'hidden'
+            }}
+          >
+            {RightLinks}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };

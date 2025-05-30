@@ -155,7 +155,6 @@
   max-width: 95%;
 }
 
-/* Responsive styles */
 @media (max-width: 900px) {
   .location-content {
     flex-direction: column;

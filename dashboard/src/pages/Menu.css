@@ -113,6 +113,15 @@ html, body, #root {
   font-family: 'Poppins', sans-serif !important;
 }
 
+.menu-category-sidebar {
+  position: sticky !important;
+  top: 102px !important;
+  z-index: 20 !important;
+  max-height: calc(100vh - 114px) !important;
+  overflow-y: auto !important;
+  align-self: flex-start !important;
+}
+
 @media (max-width: 900px) {
   .menu-flex-row {
     flex-direction: column;
@@ -138,6 +147,20 @@ html, body, #root {
     width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .menu-mobile-categories-bar {
+    position: sticky !important;
+    top: 90px !important;
+    left: 0;
+    right: 0;
+    z-index: 100 !important;
+    background: rgba(0,0,0,0.25);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    backdrop-filter: blur(2px);
+    margin-bottom: 10px !important;
   }
 }
 

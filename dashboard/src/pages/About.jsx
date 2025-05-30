@@ -11,11 +11,11 @@ const AboutSlide = ({ title, paragraphs, image, video, reverse, gap }) => (
       ...(reverse ? { flexDirection: 'row-reverse' } : {}),
       ...(gap ? { gap } : {}),
       minHeight: '60vh',
-      maxHeight: '90vh',
-      width: '90vw',
-      maxWidth: 900,
-      margin: '0 auto',
-      padding: '3rem 2.5rem',
+      maxHeight: 'none',
+      width: '96vw',
+      maxWidth: 1300,
+      margin: 0, 
+      padding: '1.2rem 1rem', 
       borderRadius: 18,
       boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
       background: 'rgba(0,0,0,0.18)',
@@ -24,19 +24,27 @@ const AboutSlide = ({ title, paragraphs, image, video, reverse, gap }) => (
       justifyContent: 'center',
       alignItems: 'stretch',
       zIndex: 2,
-      // Responsive overrides
+      ...(window.innerWidth <= 1200
+        ? {
+            width: '99vw',
+            maxWidth: '99vw',
+            padding: '1rem 0.5rem',
+            gap: '2rem',
+          }
+        : {}),
       ...(window.innerWidth <= 900
         ? {
             flexDirection: 'column',
-            padding: '2rem 1.2rem',
+            padding: '0.7rem 0.2rem', 
             gap: '1.5rem',
             minHeight: '60vh',
-            width: '98vw',
+            width: '100vw',
+            maxWidth: '100vw',
           }
         : {}),
       ...(window.innerWidth <= 600
         ? {
-            padding: '1.2rem 0.5rem',
+            padding: '0.3rem 0.1rem',
             gap: '1rem',
             minHeight: '50vh',
             width: '100vw',
@@ -45,7 +53,7 @@ const AboutSlide = ({ title, paragraphs, image, video, reverse, gap }) => (
         : {}),
     }}
   >
-    <div className="LeftAbout" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <div className="LeftAbout" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: 0 }}>
       <Title level={2} className="about-title">{title}</Title>
       {paragraphs.map((text, idx) => (
         <Paragraph className="about-paragraph" key={idx}>
@@ -53,7 +61,14 @@ const AboutSlide = ({ title, paragraphs, image, video, reverse, gap }) => (
         </Paragraph>
       ))}
     </div>
-    <div className="RightAbout" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <div className="RightAbout" style={{
+      flex: 1.5, 
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      minWidth: 0,
+      alignItems: 'center'
+    }}>
       {video ? (
         <video
           src={video}
@@ -64,7 +79,7 @@ const AboutSlide = ({ title, paragraphs, image, video, reverse, gap }) => (
           style={{
             width: '100%',
             height: 'auto',
-            maxWidth: window.innerWidth <= 900 ? '90vw' : reverse ? 1200 : 900,
+            maxWidth: window.innerWidth <= 900 ? '98vw' : 900,
             minWidth: 0,
             borderRadius: 18,
             boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
@@ -72,7 +87,8 @@ const AboutSlide = ({ title, paragraphs, image, video, reverse, gap }) => (
             zIndex: 2,
             position: 'relative',
             margin: window.innerWidth <= 900 ? '1.5rem auto 0 auto' : reverse ? '0 auto 0 0' : '0 auto',
-            display: 'block'
+            display: 'block',
+            maxHeight: window.innerWidth <= 900 ? '50vh' : '60vh', 
           }}
         />
       ) : (
@@ -82,7 +98,7 @@ const AboutSlide = ({ title, paragraphs, image, video, reverse, gap }) => (
           style={{
             width: '100%',
             height: 'auto',
-            maxWidth: window.innerWidth <= 900 ? '90vw' : reverse ? 1200 : 900,
+            maxWidth: window.innerWidth <= 900 ? '98vw' : 900, 
             minWidth: 0,
             borderRadius: 18,
             boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
@@ -90,7 +106,8 @@ const AboutSlide = ({ title, paragraphs, image, video, reverse, gap }) => (
             zIndex: 2,
             position: 'relative',
             margin: window.innerWidth <= 900 ? '1.5rem auto 0 auto' : reverse ? '0 auto 0 0' : '0 auto',
-            display: 'block'
+            display: 'block',
+            maxHeight: window.innerWidth <= 900 ? '50vh' : '60vh', 
           }}
         />
       )}
@@ -99,8 +116,7 @@ const AboutSlide = ({ title, paragraphs, image, video, reverse, gap }) => (
 );
 
 const About = () => {
-  // Get navbar height for responsive offset
-  const navbarHeight = window.innerWidth <= 768 ? 80 : 120;
+  const navbarHeight = window.innerWidth <= 768 ? 60 : 80; 
 
   return (
     <div
@@ -167,6 +183,41 @@ const About = () => {
           />
         </Carousel>
       </div>
+      <style>
+        {`
+        html, body {
+          background: #23211f !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow-x: hidden;
+        }
+        .about-content {
+          transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .about-title {
+          font-size: 2.2rem !important;
+        }
+        .about-paragraph {
+          font-size: 1.15rem !important;
+        }
+        @media (max-width: 900px) {
+          .about-content {
+            flex-direction: column !important;
+            width: 99vw !important;
+            max-width: 99vw !important;
+            padding: 0.7rem 0.2rem !important;
+          }
+        }
+        @media (max-width: 600px) {
+          .about-content {
+            padding: 0.3rem 0.1rem !important;
+            gap: 1rem !important;
+            width: 100vw !important;
+            border-radius: 0 !important;
+          }
+        }
+        `}
+      </style>
     </div>
   );
 };
