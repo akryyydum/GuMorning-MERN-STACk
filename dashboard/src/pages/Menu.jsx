@@ -6,7 +6,7 @@ import './Menu.css';
 const { Title } = Typography;
 const { useBreakpoint } = Grid;
 const NAVBAR_HEIGHT = 90;
-const API_URL = 'https://gu-morning-mern-sta-ck-7xje.vercel.app/api';
+const API_URL = 'http://localhost:5000/api';
 
 const categoryOptions = [
   "All",
